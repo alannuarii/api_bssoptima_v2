@@ -1,0 +1,9 @@
+CREATE TABLE bms
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    tanggal DATE NOT NULL,
+    id_bms INT NOT NULL,
+    voltage FLOAT NOT NULL,
+    temperature FLOAT NOT NULL,
+    PRIMARY KEY (id)
+)

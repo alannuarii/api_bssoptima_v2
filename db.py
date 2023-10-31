@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def connection(query, action):
+def connection(query, action, value):
         conn = None
         try:
             conn = mysql.connector.connect(
@@ -18,17 +18,17 @@ def connection(query, action):
             cur = conn.cursor(dictionary=True)
             if conn.is_connected():
                 if action == 'select':
-                    cur.execute(query)
+                    cur.execute(query, value)
                     result = cur.fetchall()
                     return result
                 elif action == 'insert':
-                    cur.execute(query)
+                    cur.execute(query, value)
                     conn.commit()
                 elif action == 'update':
-                    cur.execute(query)
+                    cur.execute(query, value)
                     conn.commit()
                 elif action == 'delete':
-                    cur.execute(query)
+                    cur.execute(query, value)
                     conn.commit()
         except Exception as error:
             print(error)
