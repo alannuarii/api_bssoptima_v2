@@ -31,3 +31,20 @@ def get_bms():
     except Exception as e:
         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
         return jsonify(error_response), 500
+    
+
+@app.route('/autouploadbms', methods=['GET', 'POST'])
+def auto_upload_bms():
+    if request.method == 'POST':
+        try:
+            obj_bms = BMS()
+            obj_bms.auto_input_bms()
+
+        except Exception as e:
+            error_response = {"message": "Data gagal terkirim", "error": str(e)}
+            return jsonify(error_response), 500
+
+    response = {"message": "Data berhasil dikirim"}
+    return jsonify(response), 200
+    
+

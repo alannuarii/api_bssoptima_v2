@@ -5,5 +5,7 @@ CREATE TABLE bms
     id_bms INT NOT NULL,
     voltage FLOAT NOT NULL,
     temperature FLOAT NOT NULL,
+    capacity FLOAT NOT NULL,
+    rul FLOAT NOT NULL,
     PRIMARY KEY (id)
 )

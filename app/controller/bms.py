@@ -1,6 +1,9 @@
 from db import connection
 from flask import request
 from datetime import date,timedelta
+from app.model.voltage_to_capacity.predict_capacity import vol_to_cap
+from app.model.capacity_to_rul.predict_rul import cap_to_rul
+import random
 
 
 class BMS:
@@ -22,13 +25,15 @@ class BMS:
         tanggal = request.form['tanggal']
         voltage = request.form['voltage']
         temperature = request.form['temperature']
-        self.insert_bms(id_bms, tanggal, voltage, temperature)
+        capacity = vol_to_cap(voltage)
+        rul = cap_to_rul(capacity)
+        self.insert_bms(id_bms, tanggal, voltage, temperature, capacity, rul)
         self.get_bms()
 
 
-    def insert_bms(self, id_bms, tanggal, voltage, temperature):
-        query = f"INSERT INTO bms (id_bms, tanggal, voltage, temperature) VALUES (%s, %s, %s, %s)"
-        value = [id_bms, tanggal, voltage, temperature]
+    def insert_bms(self, id_bms, tanggal, voltage, temperature, capacity, rul):
+        query = f"INSERT INTO bms (id_bms, tanggal, voltage, temperature, capacity, rul) VALUES (%s, %s, %s, %s, %s, %s)"
+        value = [id_bms, tanggal, voltage, temperature, capacity, rul]
         connection(query, 'insert', value)
 
     def get_bms(self):
@@ -36,3 +41,14 @@ class BMS:
         value = self.get_week()
         result = connection(query, 'select', value)
         return result
+    
+    def auto_input_bms(self):
+        tanggal = '2023-11-01'
+        for i in range(1,177):
+            volt_random = round(random.uniform(50,55), 2)
+            temp_random = round(random.uniform(17,25), 2)
+            capacity = vol_to_cap(volt_random)
+            rul = cap_to_rul(capacity)
+            self.insert_bms(i, tanggal, volt_random, temp_random, capacity, rul)
+
+        print('Input Data Berhasil')
