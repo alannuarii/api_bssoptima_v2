@@ -28,7 +28,7 @@ class BMS:
         capacity = vol_to_cap(voltage)
         rul = cap_to_rul(capacity)
         self.insert_bms(id_bms, tanggal, voltage, temperature, capacity, rul)
-        self.get_bms()
+        self.get_id_bms()
 
 
     def insert_bms(self, id_bms, tanggal, voltage, temperature, capacity, rul):
@@ -36,11 +36,23 @@ class BMS:
         value = [id_bms, tanggal, voltage, temperature, capacity, rul]
         connection(query, 'insert', value)
 
-    def get_bms(self):
+    def get_id_bms(self):
         query = f"SELECT id_bms FROM bms WHERE tanggal >= %s AND tanggal <= %s ORDER BY id_bms"
         value = self.get_week()
         result = connection(query, 'select', value)
         return result
+    
+    def get_bms(self, bss):
+        if bss == 'bss1':
+            query = f"SELECT * FROM bms WHERE tanggal >= %s AND tanggal <= %s AND id_bms < 89 ORDER BY id_bms"
+            value = self.get_week()
+            result = connection(query, 'select', value)
+            return result
+        elif bss == 'bss2':
+            query = f"SELECT * FROM bms WHERE tanggal >= %s AND tanggal <= %s AND id_bms > 88 ORDER BY id_bms"
+            value = self.get_week()
+            result = connection(query, 'select', value)
+            return result
     
     def auto_input_bms(self):
         tanggal = '2023-11-01'

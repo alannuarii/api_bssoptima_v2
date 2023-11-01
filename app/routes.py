@@ -19,12 +19,26 @@ def upload_bms():
     return jsonify(response), 200
 
 
-@app.route('/getbms')
-def get_bms():
+@app.route('/getidbms')
+def get_id_bms():
     try:
         obj_bms = BMS()
-        result = obj_bms.get_bms()
+        result = obj_bms.get_id_bms()
 
+        response = {"message": "Sukses", "data": result}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
+    
+
+@app.route('/getbms/<bss>')
+def get_bms(bss):
+    try:
+        obj_bms = BMS()
+        result = obj_bms.get_bms(bss)
+        
         response = {"message": "Sukses", "data": result}
         return jsonify(response), 200
 
