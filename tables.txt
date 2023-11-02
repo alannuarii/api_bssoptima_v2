@@ -9,3 +9,11 @@ CREATE TABLE bms
     rul FLOAT NOT NULL,
     PRIMARY KEY (id)
 )
+
+CREATE TABLE irradiance
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    waktu DATETIME NOT NULL,
+    irradiance FLOAT NOT NULL,
+    PRIMARY KEY (id)
+)

@@ -1,6 +1,7 @@
 from app import app
 from flask import jsonify, request
 from app.controller.bms import BMS
+from app.controller.irradiance import Irradiance
 
 
 @app.route('/uploadbms', methods=['GET', 'POST'])
@@ -60,5 +61,34 @@ def auto_upload_bms():
 
     response = {"message": "Data berhasil dikirim"}
     return jsonify(response), 200
+
+
+
+@app.route('/uploadirradiance', methods=['GET', 'POST'])
+def upload_irradiance():
+    if request.method == 'POST':
+        try:
+            obj_irr = Irradiance()
+            obj_irr.upload_file()
+
+        except Exception as e:
+            error_response = {"message": "Data gagal terkirim", "error": str(e)}
+            return jsonify(error_response), 500
+
+    response = {"message": "Data berhasil dikirim"}
+    return jsonify(response), 200
     
+
+@app.route('/getirradiance/<tanggal>')
+def get_irradiance(tanggal):
+    try:
+        obj_irr = Irradiance()
+        result = obj_irr.get_irradiance(tanggal)
+        
+        response = {"message": "Sukses", "data": result}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
 
