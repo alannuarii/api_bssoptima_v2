@@ -55,12 +55,12 @@ class BMS:
             return result
     
     def auto_input_bms(self):
-        tanggal = '2023-11-01'
-        for i in range(1,177):
+        tanggal = '2023-11-03'
+        for i in range(176):
             volt_random = round(random.uniform(50,55), 2)
             temp_random = round(random.uniform(17,25), 2)
             capacity = vol_to_cap(volt_random)
             rul = cap_to_rul(capacity)
-            self.insert_bms(i, tanggal, volt_random, temp_random, capacity, rul)
+            self.insert_bms(i+1, tanggal, volt_random, temp_random, capacity, rul)
 
         print('Input Data Berhasil')
