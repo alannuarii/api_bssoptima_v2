@@ -36,19 +36,20 @@ class Irradiance:
         data2 = self.get_irradiance(dates[1])
         data3 = self.get_irradiance(dates[0])
 
-        df1 = pd.DataFrame(data1)
-        df2 = pd.DataFrame(data2)
-        df3 = pd.DataFrame(data3)
+        datas = [data1, data2, data3]
 
-        df1['waktu'] = pd.to_datetime(df1['waktu'], format='%Y-%m-%d %H:%M:%S')
-        df2['waktu'] = pd.to_datetime(df2['waktu'], format='%Y-%m-%d %H:%M:%S')
-        df3['waktu'] = pd.to_datetime(df3['waktu'], format='%Y-%m-%d %H:%M:%S')
+        for i in range(len(datas)):
+            if len(datas[i]) == 0:
+                del datas[i]
 
-        df1['waktu'] = df1['waktu'].dt.strftime('%H:%M:%S')
-        df2['waktu'] = df2['waktu'].dt.strftime('%H:%M:%S')
-        df3['waktu'] = df3['waktu'].dt.strftime('%H:%M:%S')
+        frames = []
+            
+        for i in range(len(datas)):
+            df = pd.DataFrame(datas[i])
+            df['waktu'] = pd.to_datetime(df['waktu'], format='%Y-%m-%d %H:%M:%S')
+            df['waktu'] = df['waktu'].dt.strftime('%H:%M:%S')
+            frames.append(df)
 
-        frames = [df1, df2, df3]
         combine_df = pd.concat(frames)
         combined_df = combine_df.groupby(['waktu'])['irradiance'].mean().reset_index()
 
@@ -69,3 +70,28 @@ class Irradiance:
         max_df = combined_df.groupby(pd.Grouper(key='waktu', freq='10S')).agg({'irradiance': 'max'}).reset_index()
 
         return max_df
+    
+
+    # def get_combined_irradiance(self, tanggal):
+    #     dates = get_three_dates_before(tanggal)
+    #     data1 = self.get_irradiance(dates[2])
+    #     data2 = self.get_irradiance(dates[1])
+    #     data3 = self.get_irradiance(dates[0])
+
+    #     df1 = pd.DataFrame(data1)
+    #     df2 = pd.DataFrame(data2)
+    #     df3 = pd.DataFrame(data3)
+
+    #     df1['waktu'] = pd.to_datetime(df1['waktu'], format='%Y-%m-%d %H:%M:%S')
+    #     df2['waktu'] = pd.to_datetime(df2['waktu'], format='%Y-%m-%d %H:%M:%S')
+    #     df3['waktu'] = pd.to_datetime(df3['waktu'], format='%Y-%m-%d %H:%M:%S')
+
+    #     df1['waktu'] = df1['waktu'].dt.strftime('%H:%M:%S')
+    #     df2['waktu'] = df2['waktu'].dt.strftime('%H:%M:%S')
+    #     df3['waktu'] = df3['waktu'].dt.strftime('%H:%M:%S')
+
+    #     frames = [df1, df2, df3]
+    #     combine_df = pd.concat(frames)
+    #     combined_df = combine_df.groupby(['waktu'])['irradiance'].mean().reset_index()
+
+    #     return combined_df

@@ -94,6 +94,21 @@ def get_irradiance(tanggal):
         return jsonify(error_response), 500
     
 
+# @app.route('/getcombirradiance/<tanggal>')
+# def get_comb_irradiance(tanggal):
+#     try:
+#         obj_irr = Irradiance()
+#         result = obj_irr.get_combined_irradiance(tanggal)
+#         print(len(result))
+        
+#         response = {"message": "Sukses"}
+#         return jsonify(response), 200
+
+#     except Exception as e:
+#         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+#         return jsonify(error_response), 500
+    
+
 @app.route('/getaveragedirradiance/<tanggal>')
 def get_averaged_irradiance(tanggal):
     try:
