@@ -64,7 +64,6 @@ def auto_upload_bms():
     return jsonify(response), 200
 
 
-
 @app.route('/uploadirradiance', methods=['GET', 'POST'])
 def upload_irradiance():
     if request.method == 'POST':
@@ -92,21 +91,6 @@ def get_irradiance(tanggal):
     except Exception as e:
         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
         return jsonify(error_response), 500
-    
-
-# @app.route('/getcombirradiance/<tanggal>')
-# def get_comb_irradiance(tanggal):
-#     try:
-#         obj_irr = Irradiance()
-#         result = obj_irr.get_combined_irradiance(tanggal)
-#         print(len(result))
-        
-#         response = {"message": "Sukses"}
-#         return jsonify(response), 200
-
-#     except Exception as e:
-#         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
-#         return jsonify(error_response), 500
     
 
 @app.route('/getaveragedirradiance/<tanggal>')
