@@ -21,3 +21,23 @@ def df_to_sql(dataframe, table_name):
         if 'engine' in locals():
             engine.dispose()
 
+
+def sql_to_df(query):
+    try:
+        # Buat koneksi ke MySQL menggunakan SQLAlchemy
+        db_url = f"mysql+mysqlconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+        engine = create_engine(db_url)
+
+        # Eksekusi query SQL dan ambil data ke dalam DataFrame
+        df = pd.read_sql(query, con=engine)
+
+        return df
+
+    except Exception as error:
+        print(f"Error: {error}")
+        return None
+
+    finally:
+        if 'engine' in locals():
+            engine.dispose()
+
