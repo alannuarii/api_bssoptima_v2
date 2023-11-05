@@ -3,6 +3,7 @@ from flask import jsonify, request
 from app.controller.bms import BMS
 from app.controller.irradiance import Irradiance
 import pandas as pd
+from utils import get_three_dates_before
 
 
 @app.route('/uploadbms', methods=['GET', 'POST'])
@@ -93,11 +94,11 @@ def get_irradiance(tanggal):
         return jsonify(error_response), 500
     
 
-@app.route('/getaveragedirradiance/<tanggal>')
-def get_averaged_irradiance(tanggal):
+@app.route('/getminirradiance/<tanggal>')
+def get_min_irradiance(tanggal):
     try:
         obj_irr = Irradiance()
-        result_df = obj_irr.get_averaged_irradiance(tanggal)
+        result_df = obj_irr.get_min_irradiance(tanggal)
         result_list = result_df.to_dict(orient='records')
         response = {"message": "Sukses", "data":result_list}
         return jsonify(response), 200
@@ -114,6 +115,57 @@ def get_max_irradiance(tanggal):
         result_df = obj_irr.get_max_irradiance(tanggal)
         result_list = result_df.to_dict(orient='records')
         response = {"message": "Sukses", "data":result_list}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
+    
+
+@app.route('/optimization/<tanggal>')
+def get_optimization(tanggal):
+    dates = get_three_dates_before(tanggal)
+    try:
+        obj_irr = Irradiance()
+        datas = []
+        for i in range(len(dates)):
+            irradiance = obj_irr.get_irradiance(dates[i])
+            datas.append(irradiance)
+        
+        result_df_avg = obj_irr.get_min_irradiance(datas[2], datas[1], datas[0])
+        result_df_max = obj_irr.get_max_irradiance(datas[2], datas[1], datas[0])
+
+        result_list_avg = result_df_avg.to_dict(orient='records')
+        result_list_max = result_df_max.to_dict(orient='records')
+        response = {"message": "Sukses", "data":{
+            "irr1":datas[2],
+            "irr2":datas[1],
+            "irr3":datas[0],
+            "avg":result_list_avg,
+            "max":result_list_max
+        }}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
+    
+
+@app.route('/testing/<tanggal>')
+def get_testing(tanggal):
+    dates = get_three_dates_before(tanggal)
+    try:
+        obj_irr = Irradiance()
+        datas = []
+        for i in range(len(dates)):
+            irradiance = obj_irr.get_irradiance(dates[i])
+            datas.append(irradiance)
+        
+        response = {"message": "Sukses", "data":{
+            "irr1":datas[2],
+            "irr2":datas[1],
+            "irr3":datas[0],
+        }}
         return jsonify(response), 200
 
     except Exception as e:

@@ -30,12 +30,7 @@ class Irradiance:
         return result
     
 
-    def get_combined_irradiance(self, tanggal):
-        dates = get_three_dates_before(tanggal)
-        data1 = self.get_irradiance(dates[2])
-        data2 = self.get_irradiance(dates[1])
-        data3 = self.get_irradiance(dates[0])
-
+    def get_combined_irradiance(self, data1, data2, data3):
         datas = [data1, data2, data3]
 
         for i in range(len(datas)):
@@ -56,16 +51,16 @@ class Irradiance:
         return combined_df
 
 
-    def get_averaged_irradiance(self, tanggal):
-        combined_df = self.get_combined_irradiance(tanggal)
+    def get_min_irradiance(self, data1, data2, data3):
+        combined_df = self.get_combined_irradiance(data1, data2, data3)
         combined_df['waktu'] = pd.to_datetime(combined_df['waktu'], format='%H:%M:%S')
-        averaged_df = combined_df.groupby(pd.Grouper(key='waktu', freq='10S')).agg({'irradiance': 'mean'}).reset_index()
+        min_df = combined_df.groupby(pd.Grouper(key='waktu', freq='10S')).agg({'irradiance': 'min'}).reset_index()
 
-        return averaged_df
+        return min_df
     
 
-    def get_max_irradiance(self, tanggal):
-        combined_df = self.get_combined_irradiance(tanggal)
+    def get_max_irradiance(self, data1, data2, data3):
+        combined_df = self.get_combined_irradiance(data1, data2, data3)
         combined_df['waktu'] = pd.to_datetime(combined_df['waktu'], format='%H:%M:%S')
         max_df = combined_df.groupby(pd.Grouper(key='waktu', freq='10S')).agg({'irradiance': 'max'}).reset_index()
 
