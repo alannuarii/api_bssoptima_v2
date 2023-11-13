@@ -24,7 +24,7 @@ class Irradiance:
 
 
     def get_irradiance(self, tanggal):
-        query = f"SELECT waktu, irradiance FROM irradiance WHERE DATE(waktu) = %s ORDER BY waktu"
+        query = f"SELECT waktu, AVG(bssoptima.irradiance.irradiance) AS irradiance FROM irradiance WHERE DATE(waktu) = %s GROUP BY waktu ORDER BY waktu"
         value = [tanggal]
         result = connection(query, 'select', value)
         return result

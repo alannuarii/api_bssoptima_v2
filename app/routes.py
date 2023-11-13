@@ -151,24 +151,3 @@ def get_optimization(tanggal):
         return jsonify(error_response), 500
     
 
-@app.route('/testing/<tanggal>')
-def get_testing(tanggal):
-    dates = get_three_dates_before(tanggal)
-    try:
-        obj_irr = Irradiance()
-        datas = []
-        for i in range(len(dates)):
-            irradiance = obj_irr.get_irradiance(dates[i])
-            datas.append(irradiance)
-        
-        response = {"message": "Sukses", "data":{
-            "irr1":datas[2],
-            "irr2":datas[1],
-            "irr3":datas[0],
-        }}
-        return jsonify(response), 200
-
-    except Exception as e:
-        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
-        return jsonify(error_response), 500
-
