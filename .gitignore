@@ -2,5 +2,3 @@
 .env
 __pycache__/
 *.pyc
-server.py
-tables.txt

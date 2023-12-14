@@ -50,19 +50,20 @@ def get_bms(bss):
         return jsonify(error_response), 500
     
 
-@app.route('/autouploadbms', methods=['GET', 'POST'])
+@app.route('/autouploadbms', methods=['POST'])
 def auto_upload_bms():
-    if request.method == 'POST':
-        try:
-            obj_bms = BMS()
-            obj_bms.auto_input_bms()
+    try:
+        obj_bms = BMS()
+        obj_bms.auto_input_bms()
 
-        except Exception as e:
-            error_response = {"message": "Data gagal terkirim", "error": str(e)}
-            return jsonify(error_response), 500
+        response = {"message": "Data berhasil dikirim"}
+        return jsonify(response), 200
 
-    response = {"message": "Data berhasil dikirim"}
-    return jsonify(response), 200
+    except Exception as e:
+        error_response = {"message": "Data gagal terkirim", "error": str(e)}
+        return jsonify(error_response), 500
+
+
 
 
 @app.route('/uploadirradiance', methods=['GET', 'POST'])
