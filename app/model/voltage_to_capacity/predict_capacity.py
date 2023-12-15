@@ -1,5 +1,5 @@
 import pandas as pd
-import pickle
+from joblib import load
 
 # Inisiasi model 
 model_volt_cap = 'app/model/voltage_to_capacity/voltage_to_capacity.pkl'
@@ -9,8 +9,7 @@ def vol_to_cap(input):
 
     feature = pd.DataFrame(data)
 
-    with open(model_volt_cap, 'rb') as file:
-        loaded_model = pickle.load(file)
+    loaded_model = load(model_volt_cap)
 
     capacity = loaded_model.predict(feature)
 

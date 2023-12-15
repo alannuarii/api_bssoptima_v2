@@ -1,5 +1,5 @@
 import pandas as pd
-import pickle
+from joblib import load
 
 # Inisiasi model 
 model_cap_rul = 'app/model/capacity_to_rul/capacity_to_rul.pkl'
@@ -9,8 +9,7 @@ def cap_to_rul(input):
 
     feature = pd.DataFrame(data)
 
-    with open(model_cap_rul, 'rb') as file:
-        loaded_model = pickle.load(file)
+    loaded_model = load(model_cap_rul)
 
     rul = loaded_model.predict(feature)
 

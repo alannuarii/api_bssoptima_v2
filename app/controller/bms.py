@@ -55,7 +55,7 @@ class BMS:
             return result
     
     def auto_input_bms(self):
-        tanggal = '2023-12-13'
+        tanggal = '2023-12-15'
         for i in range(176):
             volt_random = round(random.uniform(50,55), 2)
             temp_random = round(random.uniform(17,25), 2)
