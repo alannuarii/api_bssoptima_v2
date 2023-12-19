@@ -6,20 +6,18 @@ import pandas as pd
 from utils import get_three_dates_before
 
 
-@app.route('/uploadbms', methods=['GET', 'POST'])
+@app.route('/uploadbms', methods=['POST'])
 def upload_bms():
-    if request.method == 'POST':
-        try:
-            obj_bms = BMS()
-            obj_bms.upload_bms()
-            result = obj_bms.get_bms()
+    try:
+        obj_bms = BMS()
+        obj_bms.upload_bms()
+        result = obj_bms.get_bms()
+        response = {"message": "Data berhasil dikirim", "data": result}
+        return jsonify(response), 200
 
-        except Exception as e:
-            error_response = {"message": "Data gagal terkirim", "error": str(e)}
-            return jsonify(error_response), 500
-
-    response = {"message": "Data berhasil dikirim", "data": result}
-    return jsonify(response), 200
+    except Exception as e:
+        error_response = {"message": "Data gagal terkirim", "error": str(e)}
+        return jsonify(error_response), 500
 
 
 @app.route('/getidbms')
@@ -64,20 +62,18 @@ def auto_upload_bms(tanggal):
         return jsonify(error_response), 500
 
 
-@app.route('/uploadirradiance', methods=['GET', 'POST'])
+@app.route('/uploadirradiance', methods=['POST'])
 def upload_irradiance():
-    if request.method == 'POST':
-        try:
-            obj_irr = Irradiance()
-            obj_irr.upload_file()
+    try:
+        obj_irr = Irradiance()
+        obj_irr.upload_file()
+        response = {"message": "Data berhasil dikirim"}
+        return jsonify(response), 200
 
-        except Exception as e:
-            error_response = {"message": "Data gagal terkirim", "error": str(e)}
-            return jsonify(error_response), 500
+    except Exception as e:
+        error_response = {"message": "Data gagal terkirim", "error": str(e)}
+        return jsonify(error_response), 500
 
-    response = {"message": "Data berhasil dikirim"}
-    return jsonify(response), 200
-    
 
 @app.route('/getirradiance/<tanggal>')
 def get_irradiance(tanggal):
@@ -143,6 +139,20 @@ def get_optimization(tanggal):
             "avg":result_list_avg,
             "max":result_list_max
         }}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
+    
+
+@app.route('/getlast4days')
+def get_last_4days():
+    try:
+        obj_irr = Irradiance()
+        result = obj_irr.get_last_4days()
+        
+        response = {"message": "Sukses", "data": result}
         return jsonify(response), 200
 
     except Exception as e:

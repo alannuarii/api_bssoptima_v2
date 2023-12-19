@@ -65,6 +65,13 @@ class Irradiance:
         max_df = combined_df.groupby(pd.Grouper(key='waktu', freq='10S')).agg({'irradiance': 'max'}).reset_index()
 
         return max_df
+
+
+    def get_last_4days(self):
+        query = f"SELECT CAST(waktu AS DATE) AS tanggal FROM irradiance WHERE waktu >= CURDATE() - INTERVAL 4 DAY GROUP BY tanggal"
+        value = []
+        result = connection(query, 'select', value)
+        return result
     
 
     # def get_combined_irradiance(self, tanggal):
