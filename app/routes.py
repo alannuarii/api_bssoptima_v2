@@ -142,7 +142,13 @@ def get_optimization(tanggal):
         return jsonify(response), 200
 
     except Exception as e:
-        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        error_response = {"message": "Terjadi kesalahan", "error": str(e), "data":{
+            "irr1":[],
+            "irr2":[],
+            "irr3":[],
+            "avg":[],
+            "max":[]
+        }}
         return jsonify(error_response), 500
     
 
