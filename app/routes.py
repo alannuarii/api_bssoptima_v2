@@ -1,8 +1,7 @@
 from app import app
-from flask import jsonify, request
+from flask import jsonify
 from app.controller.bms import BMS
 from app.controller.irradiance import Irradiance
-import pandas as pd
 from utils import get_three_dates_before
 
 
