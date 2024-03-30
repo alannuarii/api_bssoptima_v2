@@ -10,7 +10,7 @@ import random
 class BMS:
     def get_week(self):
         today = date.today()
-        if today.weekday() == 5:
+        if today.weekday() == 4:
             last_friday = today
         else:
             days_to_last_friday = (today.weekday() - 4) % 7
@@ -58,7 +58,7 @@ class BMS:
         today = datetime.now()
         tanggal = today.strftime("%Y-%m-%d")
         number_day = today.weekday()
-        if number_day == 4:
+        if number_day == 5:
             for i in range(176):
                 volt_random = round(random.uniform(50,55), 2)
                 temp_random = round(random.uniform(17,25), 2)
