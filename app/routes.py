@@ -72,6 +72,19 @@ def upload_irradiance():
     except Exception as e:
         error_response = {"message": "Data gagal terkirim", "error": str(e)}
         return jsonify(error_response), 500
+    
+
+@app.route('/autouploadirradiance', methods=['POST'])
+def auto_upload_irradiance():
+    try:
+        obj_irr = Irradiance()
+        obj_irr.auto_upload_file()
+        response = {"message": "Data berhasil dikirim"}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Data gagal terkirim", "error": str(e)}
+        return jsonify(error_response), 500
 
 
 @app.route('/getirradiance/<tanggal>')

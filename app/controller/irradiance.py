@@ -2,6 +2,8 @@ from flask import request
 from db import connection
 from db2 import df_to_sql
 import pandas as pd
+import random
+from datetime import datetime
 from utils import get_three_dates_before
 
 
@@ -14,7 +16,18 @@ class Irradiance:
         df['Time'] = df['Time'].dt.strftime('%Y-%m-%d %H:%M:%S')
         df.rename(columns={'Time': 'waktu', 'Global Irradiance': 'irradiance'}, inplace=True)
         df_to_sql(df, 'irradiance')
-        pd.read_sql
+        # pd.read_sql
+
+
+    def auto_upload_file(self):
+        file = ['1.csv','2.csv','3.csv','4.csv']
+        random_file = random.choice(file)
+        path = f'app/data/{random_file}'
+        tanggal = int(datetime.today().date().strftime('%d'))
+        df = pd.read_csv(path)
+        df['waktu'] = pd.to_datetime(df['waktu'])
+        df['waktu'] = df['waktu'].apply(lambda x: x.replace(day=tanggal))
+        df_to_sql(df, 'irradiance')
 
 
     def insert_irradiance(self, waktu, irradiance):
