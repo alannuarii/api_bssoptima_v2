@@ -47,11 +47,11 @@ def get_bms(bss):
         return jsonify(error_response), 500
     
 
-@app.route('/autouploadbms/<tanggal>', methods=['POST'])
-def auto_upload_bms(tanggal):
+@app.route('/autouploadbms', methods=['POST'])
+def auto_upload_bms():
     try:
         obj_bms = BMS()
-        obj_bms.auto_input_bms(tanggal)
+        obj_bms.auto_input_bms()
 
         response = {"message": "Data berhasil dikirim"}
         return jsonify(response), 200
@@ -162,6 +162,20 @@ def get_last_4days():
 
     except Exception as e:
         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
+    
+
+@app.route('/testupload', methods=['POST'])
+def test_upload():
+    try:
+        obj_bms = BMS()
+        obj_bms.test_upload()
+        
+        response = {"message": "Data berhasil dikirim"}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Data gagal terkirim", "error": str(e)}
         return jsonify(error_response), 500
     
 
