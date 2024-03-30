@@ -24,9 +24,11 @@ class Irradiance:
         random_file = random.choice(file)
         path = f'app/data/{random_file}'
         tanggal = int(datetime.today().date().strftime('%d'))
+        bulan = int(datetime.today().date().strftime('%m'))
+        tahun = int(datetime.today().date().strftime('%Y'))
         df = pd.read_csv(path)
         df['waktu'] = pd.to_datetime(df['waktu'])
-        df['waktu'] = df['waktu'].apply(lambda x: x.replace(day=tanggal))
+        df['waktu'] = df['waktu'].apply(lambda x: x.replace(year=tahun, month=bulan, day=tanggal))
         df_to_sql(df, 'irradiance')
 
 
