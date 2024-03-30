@@ -10,7 +10,7 @@ import random
 class BMS:
     def get_week(self):
         today = date.today()
-        if today.weekday() == 4:
+        if today.weekday() == 5:
             last_friday = today
         else:
             days_to_last_friday = (today.weekday() - 4) % 7
@@ -66,6 +66,3 @@ class BMS:
                 rul = cap_to_rul(capacity)
                 self.insert_bms(i+1, tanggal, volt_random, temp_random, capacity, rul)
             print('Input Data Berhasil')
-
-    def test_upload(self):
-        print('Function executed')

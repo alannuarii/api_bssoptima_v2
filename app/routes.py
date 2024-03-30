@@ -165,17 +165,6 @@ def get_last_4days():
         return jsonify(error_response), 500
     
 
-@app.route('/testupload', methods=['POST'])
-def test_upload():
-    try:
-        obj_bms = BMS()
-        obj_bms.test_upload()
-        
-        response = {"message": "Data berhasil dikirim"}
-        return jsonify(response), 200
 
-    except Exception as e:
-        error_response = {"message": "Data gagal terkirim", "error": str(e)}
-        return jsonify(error_response), 500
     
 
