@@ -15,12 +15,14 @@ class Irradiance:
         df['Time'] = pd.to_datetime(df['Time'], format='%m/%d/%Y %H:%M:%S')
         df['Time'] = df['Time'].dt.strftime('%Y-%m-%d %H:%M:%S')
         df.rename(columns={'Time': 'waktu', 'Global Irradiance': 'irradiance'}, inplace=True)
+        tanggal = df['waktu'][0][:10]
+        if self.check_date_irradiance(tanggal):
+            self.delete_irradiance(tanggal)
         df_to_sql(df, 'irradiance')
-        # pd.read_sql
 
 
     def auto_upload_file(self):
-        file = ['1.csv','2.csv','3.csv','4.csv']
+        file = ['1.csv','2.csv','3.csv','4.csv','5.csv','6.csv']
         random_file = random.choice(file)
         path = f'app/data/{random_file}'
         tanggal = int(datetime.today().date().strftime('%d'))
@@ -45,6 +47,19 @@ class Irradiance:
         return result
     
 
+    def check_date_irradiance(self, tanggal):
+        query = f"SELECT DATE_FORMAT(waktu, '%Y-%m-%d') AS tanggal FROM irradiance WHERE DATE(waktu) = %s LIMIT 1"
+        value = [tanggal]
+        result = connection(query, 'select', value)
+        return result
+    
+
+    def delete_irradiance(self, tanggal):
+        query = f"DELETE FROM irradiance WHERE DATE(waktu) = %s"
+        value = [tanggal]
+        connection(query, 'delete', value)
+
+    
     def get_combined_irradiance(self, data1, data2, data3):
         datas = [data1, data2, data3]
 
