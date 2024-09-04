@@ -5,12 +5,12 @@ from app.controller.irradiance import Irradiance
 from utils import get_three_dates_before
 
 
-@app.route('/uploadbms', methods=['POST'])
-def upload_bms():
+@app.route('/uploadbms/<bss>', methods=['POST'])
+def upload_bms(bss):
     try:
         obj_bms = BMS()
         obj_bms.upload_bms()
-        result = obj_bms.get_bms()
+        result = obj_bms.get_bms(bss)
         response = {"message": "Data berhasil dikirim", "data": result}
         return jsonify(response), 200
 
@@ -169,6 +169,20 @@ def get_last_4days():
     try:
         obj_irr = Irradiance()
         result = obj_irr.get_last_4days()
+        
+        response = {"message": "Sukses", "data": result}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
+    
+
+@app.route('/checkbms/<tanggal>')
+def check_bms(tanggal):
+    try:
+        obj_bms = BMS()
+        result = obj_bms.check_bms('2024-08-12')
         
         response = {"message": "Sukses", "data": result}
         return jsonify(response), 200

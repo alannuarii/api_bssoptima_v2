@@ -6,7 +6,6 @@ from app.model.capacity_to_rul.predict_rul import cap_to_rul
 import random
 
 
-
 class BMS:
     def get_week(self):
         today = date.today()
@@ -58,7 +57,7 @@ class BMS:
         today = datetime.now()
         tanggal = today.strftime("%Y-%m-%d")
         number_day = today.weekday()
-        if number_day == 4:
+        if number_day == 4 and self.check_bms(tanggal) == []:
             for i in range(176):
                 volt_random = round(random.uniform(50,55), 2)
                 temp_random = round(random.uniform(17,25), 2)
@@ -66,3 +65,12 @@ class BMS:
                 rul = cap_to_rul(capacity)
                 self.insert_bms(i+1, tanggal, volt_random, temp_random, capacity, rul)
             print('Input Data Berhasil')
+        else:
+            print(f"Data pada tanggal {tanggal} sudah ada")
+
+
+    def check_bms(self, tanggal):
+        query = f"SELECT * FROM bms WHERE tanggal = %s"
+        value = [tanggal]
+        result = connection(query, 'select', value)
+        return result
