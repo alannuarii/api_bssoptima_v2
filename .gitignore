@@ -1,5 +1,4 @@
 /env
 .env
-/tables.txt
 __pycache__/
 *.pyc
