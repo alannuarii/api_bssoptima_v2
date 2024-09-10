@@ -82,7 +82,7 @@ class Irradiance:
 
 
     def get_last_4days(self):
-        query = f"SELECT CAST(waktu AS DATE) AS waktu FROM irradiance WHERE waktu >= CURDATE() - INTERVAL 4 DAY GROUP BY waktu"
+        query = f"SELECT CAST(waktu AS DATE) AS tanggal FROM irradiance WHERE waktu >= CURDATE() - INTERVAL 4 DAY GROUP BY tanggal"
         value = []
         result = connection(query, 'select', value)
         return result
