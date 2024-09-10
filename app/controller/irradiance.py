@@ -2,8 +2,6 @@ from flask import request
 from db import connection
 from db2 import df_to_sql
 import pandas as pd
-import random
-from datetime import datetime
 
 
 class Irradiance:
@@ -84,7 +82,7 @@ class Irradiance:
 
 
     def get_last_4days(self):
-        query = f"SELECT CAST(waktu AS DATE) AS tanggal FROM irradiance WHERE waktu >= CURDATE() - INTERVAL 4 DAY GROUP BY tanggal"
+        query = f"SELECT CAST(waktu AS DATE) AS waktu FROM irradiance WHERE waktu >= CURDATE() - INTERVAL 4 DAY GROUP BY waktu"
         value = []
         result = connection(query, 'select', value)
         return result
