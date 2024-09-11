@@ -81,7 +81,7 @@ def get_last_4days():
         return jsonify(error_response), 500
     
 
-@app.route('/deletedata')
+@app.route('/deletedata', methods=['POST'])
 def delete_data():
     try:
         obj_irr = Irradiance()
