@@ -92,7 +92,8 @@ class Irradiance:
     def delete_oldest_data(self):
         today = datetime.now() + timedelta(hours=8)
         oldest_day = today - timedelta(days=14)
+        oldest = oldest_day.replace(hour=6, minute=0, second=0, microsecond=0)
 
         query = f"DELETE FROM irradiance WHERE waktu < %s"
-        value = [oldest_day]
+        value = [oldest]
         connection(query, 'delete', value)
