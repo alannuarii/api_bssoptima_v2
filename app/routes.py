@@ -79,6 +79,20 @@ def get_last_4days():
     except Exception as e:
         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
         return jsonify(error_response), 500
+    
+
+@app.route('/deletedata')
+def delete_data():
+    try:
+        obj_irr = Irradiance()
+        obj_irr.delete_oldest_data()
+        
+        response = {"message": "Sukses hapus data lama"}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
 
     
 

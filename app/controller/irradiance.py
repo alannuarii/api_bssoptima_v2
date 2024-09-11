@@ -1,6 +1,7 @@
 from flask import request
 from db import connection
 from db2 import df_to_sql
+from datetime import datetime, timedelta
 import pandas as pd
 
 
@@ -86,3 +87,12 @@ class Irradiance:
         value = []
         result = connection(query, 'select', value)
         return result
+    
+
+    def delete_oldest_data(self):
+        today = datetime.now() + timedelta(hours=8)
+        oldest_day = today - timedelta(days=14)
+
+        query = f"DELETE FROM irradiance WHERE waktu < %s"
+        value = [oldest_day]
+        connection(query, 'delete', value)
