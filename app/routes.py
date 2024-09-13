@@ -94,7 +94,19 @@ def delete_data():
         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
         return jsonify(error_response), 500
 
-    
+
+@app.route("/lastirradiance")
+def get_last_irradiance():
+    try:
+        object_irradiance = Irradiance()
+        result = object_irradiance.get_last_irradiance()
+
+        response = {"message": "Sukses", "data": result}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
 
 
     

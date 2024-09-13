@@ -97,3 +97,10 @@ class Irradiance:
         query = f"DELETE FROM irradiance WHERE waktu < %s"
         value = [oldest]
         connection(query, 'delete', value)
+
+
+    def get_last_irradiance(self):
+        query = f"SELECT waktu FROM irradiance ORDER BY waktu DESC LIMIT %s"
+        value = [1]
+        result = connection(query, 'select', value)
+        return result
