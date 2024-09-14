@@ -46,20 +46,21 @@ class Irradiance:
 
     
     def get_combined_irradiance(self, data1, data2, data3):
-        datas = [data1, data2, data3]
+        # Filter data to only include non-empty datasets
+        datas = [data for data in [data1, data2, data3] if len(data) > 0]
 
-        for i in range(len(datas)):
-            if len(datas[i]) == 0:
-                del datas[i]
+        # If no data is available, return an empty dataframe
+        if len(datas) == 0:
+            return pd.DataFrame(columns=['waktu', 'irradiance'])
 
         frames = []
-            
-        for i in range(len(datas)):
-            df = pd.DataFrame(datas[i])
+        for data in datas:
+            df = pd.DataFrame(data)
             df['waktu'] = pd.to_datetime(df['waktu'], format='%Y-%m-%d %H:%M:%S')
             df['waktu'] = df['waktu'].dt.strftime('%H:%M:%S')
             frames.append(df)
 
+        # Concatenate the valid dataframes and calculate the mean of 'irradiance' grouped by 'waktu'
         combine_df = pd.concat(frames)
         combined_df = combine_df.groupby(['waktu'])['irradiance'].mean().reset_index()
 
@@ -67,7 +68,11 @@ class Irradiance:
 
 
     def get_min_irradiance(self, data1, data2, data3):
+        # Get combined irradiance and find the minimum irradiance grouped by 10-second intervals
         combined_df = self.get_combined_irradiance(data1, data2, data3)
+        if combined_df.empty:
+            return combined_df
+
         combined_df['waktu'] = pd.to_datetime(combined_df['waktu'], format='%H:%M:%S')
         min_df = combined_df.groupby(pd.Grouper(key='waktu', freq='10s')).agg({'irradiance': 'min'}).reset_index()
 
@@ -75,7 +80,11 @@ class Irradiance:
     
 
     def get_max_irradiance(self, data1, data2, data3):
+        # Get combined irradiance and find the maximum irradiance grouped by 10-second intervals
         combined_df = self.get_combined_irradiance(data1, data2, data3)
+        if combined_df.empty:
+            return combined_df
+
         combined_df['waktu'] = pd.to_datetime(combined_df['waktu'], format='%H:%M:%S')
         max_df = combined_df.groupby(pd.Grouper(key='waktu', freq='10s')).agg({'irradiance': 'max'}).reset_index()
 
