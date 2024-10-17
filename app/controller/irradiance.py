@@ -113,3 +113,10 @@ class Irradiance:
         value = [1]
         result = connection(query, 'select', value)
         return result
+    
+
+    def get_rekap_data(self, bulan):
+        query = f"SELECT * FROM setting_parameter WHERE DATE_FORMAT(tanggal, '%Y-%m') = %s"
+        value = [bulan]
+        result = connection(query, "select", value)
+        return result

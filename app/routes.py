@@ -107,6 +107,20 @@ def get_last_irradiance():
     except Exception as e:
         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
         return jsonify(error_response), 500
+    
+
+@app.route('/rekap/<bulan>')
+def get_rekap(bulan):
+    try:
+        obj_irr = Irradiance()
+        result = obj_irr.get_rekap_data(bulan)
+        
+        response = {"message": "Sukses", "data": result}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
 
 
     
