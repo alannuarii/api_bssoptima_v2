@@ -138,8 +138,8 @@ def upload_setting_paramater():
         return jsonify(error_response), 500
     
 
-@app.route('/test')
-def test_route():
+@app.route('/settingparameter')
+def get_setting_parameter():
     try:
         obj = Irradiance()
         result = obj.get_setting_parameter()

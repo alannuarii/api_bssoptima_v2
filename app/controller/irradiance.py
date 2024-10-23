@@ -132,7 +132,8 @@ class Irradiance:
     
     def post_setting_parameter(self):
         today = datetime.today().strftime('%Y-%m-%d')
-        dates = get_three_dates_before(today)
+        yesterday = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
+        dates = get_three_dates_before(yesterday)
 
         datas = []
         for i in range(len(dates)):
