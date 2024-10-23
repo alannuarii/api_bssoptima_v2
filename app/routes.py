@@ -3,6 +3,8 @@ from flask import jsonify
 from app.controller.bms import BMS
 from app.controller.irradiance import Irradiance
 from utils import get_three_dates_before
+from datetime import datetime
+from math import isnan
 
 
 @app.route('/getbms/<bss>')
@@ -121,6 +123,35 @@ def get_rekap(bulan):
     except Exception as e:
         error_response = {"message": "Terjadi kesalahan", "error": str(e)}
         return jsonify(error_response), 500
+
+
+@app.route('/setting-parameter', methods=['POST'])
+def upload_setting_paramater():
+    try:
+        obj_irr = Irradiance()
+        obj_irr.post_setting_parameter()
+        response = {"message": "Data berhasil dikirim"}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Data gagal terkirim", "error": str(e)}
+        return jsonify(error_response), 500
+    
+
+@app.route('/test')
+def test_route():
+    try:
+        obj = Irradiance()
+        result = obj.get_setting_parameter()
+        
+        response = {"message": "Sukses", "data": result}
+        return jsonify(response), 200
+
+    except Exception as e:
+        error_response = {"message": "Terjadi kesalahan", "error": str(e)}
+        return jsonify(error_response), 500
+
+
 
 
     
